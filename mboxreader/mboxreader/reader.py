@@ -1,6 +1,6 @@
 import datetime
 import mailbox
-
+#tentando de novo...
 class Novato:
     def __init__(self, email, mensagem):
         self.email = email
