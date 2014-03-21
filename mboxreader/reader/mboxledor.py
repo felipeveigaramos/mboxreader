@@ -1,6 +1,17 @@
+# coding: latin
+'''
+Created on 03/03/2014
+
+@author: FelipeVR
+'''
 import datetime
 import mailbox
-#tentando de novo...
+
+from reader.conversordata import gera_data
+
+
+
+
 class Novato:
     def __init__(self, email, mensagem):
         self.email = email
@@ -9,11 +20,11 @@ class Novato:
 
     def get_tempo_resposta(self, u='h'):
         if u == 's':
-            return self.tempo_resposta/datetime.timedelta(seconds=1)
+            return self.tempo_resposta / datetime.timedelta(seconds=1)
         elif u == 'h':
-            return self.tempo_resposta/datetime.timedelta(hours=1)
+            return self.tempo_resposta / datetime.timedelta(hours=1)
         elif u == 'd':
-            return self.tempo_resposta/datetime.timedelta(days=1)
+            return self.tempo_resposta / datetime.timedelta(days=1)
         else:
             return self.tempo_resposta
 
@@ -26,45 +37,6 @@ class Novato:
     def get_mensagem(self):
         return self.mensagem
 
-def numero_mes(s):
-    if s == 'Jan':
-        return 1
-    elif s == 'Feb':
-        return 2
-    elif s == 'Mar':
-        return 3
-    elif s == 'Apr':
-        return 4
-    elif s == 'May':
-        return 5
-    elif s == 'Jun':
-        return 6
-    elif s == 'Jul':
-        return 7
-    elif s == 'Ago':
-        return 8
-    elif s == 'Set':
-        return 9
-    elif s == 'Out':
-        return 10
-    elif s == 'Nov':
-        return 11
-    elif s == 'Dez':
-        return 12
-    return 0
-
-def gera_data(s):
-    """str->datetime
-    """
-    date_string_list = s.split(' ')
-    extra = 0 #Algumas datas iniciam com o nome da semana que deve ser ignorado.
-    if len(date_string_list) > 5:
-        extra += 1
-
-    hour_string_list = date_string_list[3+extra].split(':')
-    date = datetime.datetime(int(date_string_list[2+extra]),
-numero_mes(date_string_list[1+extra]), int(date_string_list[0+extra]), int(hour_string_list[0]), int(hour_string_list[1]), int(hour_string_list[2]))
-    return date
 
 def retorna_email(s):
     sl = s.split(' ')
@@ -104,12 +76,17 @@ def calcula_media_tempo_resposta(novatos):
     soma = 0
     for n in novatos:
         soma += n.get_tempo_resposta()
-    return soma/len(novatos)
+    return soma / len(novatos)
 
 def media():
     date = datetime.datetime(2011, 4, 20)
-    mbox = mailbox.mbox('jabref-devel.mbox')
+    mbox = mailbox.mbox('mboxfiles/201104.mbox')
+    print(mbox.keys())
     antigos, novatos = gera_listas(mbox, date)
     novatos = verifica_tempo_resposta(novatos)
-    media = calcula_media_tempo_resposta(novatos)
-    print(media)
+ #   media = calcula_media_tempo_resposta(novatos)
+#    print(media)
+    print(len(novatos))
+
+
+media()
