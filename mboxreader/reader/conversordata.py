@@ -30,15 +30,15 @@ def numero_mes(s):
         return 6
     elif s == 'Jul':
         return 7
-    elif s == 'Ago':
+    elif s == 'Aug':
         return 8
-    elif s == 'Set':
+    elif s == 'Sep':
         return 9
-    elif s == 'Out':
+    elif s == 'Oct':
         return 10
     elif s == 'Nov':
         return 11
-    elif s == 'Dez':
+    elif s == 'Dec':
         return 12
     return 0
 
