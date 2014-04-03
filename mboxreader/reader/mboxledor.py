@@ -9,8 +9,7 @@ from mailbox import mbox
 import mailbox
 
 from database import fakedb
-from database.entities.mensagem import Mensagem
-from database.entities.pessoa import Pessoa
+from database.entities import *
 from reader.conversordata import gera_data
 
 
@@ -31,6 +30,18 @@ def retorna_pessoa(mensagem, data, data_mensagem):
     return pessoa        
 
 
+def e_resposta(msg, mensagem):
+    if (mensagem.subject in msg.subject) or (mensagem.message_id in msg.references) or (mensagem.message_id == msg.in_reply_to):
+        return True
+    return False
+
+
+def atribui_pai(mensagem):
+    for msg in fakedb.getbd():
+        if e_resposta(msg, mensagem):
+            mensagem.mensagemPai = msg
+
+
 def retorna_mensagem(msg, pessoa):
     mensagem = Mensagem()
     mensagem.message_from = msg['from']
@@ -42,6 +53,8 @@ def retorna_mensagem(msg, pessoa):
     mensagem.references = msg['references']
     mensagem.pessoa = pessoa
     
+    atribui_pai(mensagem)
+    
     return mensagem
 
 def gera_lista(mbox, data):
@@ -49,4 +62,8 @@ def gera_lista(mbox, data):
         data_mensagem = gera_data(msg['date'])
         pessoa = retorna_pessoa(msg, data, data_mensagem)
         mensagem = retorna_mensagem(msg, pessoa)
-        
+        fakedb.add(mensagem)
+        print('%i' % len(fakedb.getbd()))
+
+
+gera_lista(mailbox.mbox('mboxfiles/201104.mbox'), datetime.datetime(2011, 4, 20))        
