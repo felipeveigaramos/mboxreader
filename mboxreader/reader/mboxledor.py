@@ -5,11 +5,11 @@ Created on 03/03/2014
 @author: FelipeVR
 '''
 import datetime
-from mailbox import mbox
 import mailbox
 
 from database import fakedb
-from database.entities import *
+from database.entities.mensagem import Mensagem
+from database.entities.pessoa import Pessoa
 from reader.conversordata import gera_data
 
 

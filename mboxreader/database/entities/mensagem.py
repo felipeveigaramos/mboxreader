@@ -16,9 +16,9 @@ class Mensagem(object):
     message_id = Unicode()
     in_reply_to = Unicode()
     references = Unicode()
-    mensagemPai = reference(mensagemPaiId, Mensagem.id)
-    pessoa = reference(pessoaId, Pessoa.id)
-    projeto = reference(projetoId, Projeto.id)
+#    mensagemPai = reference(mensagemPaiId, Mensagem.id)
+#    pessoa = reference(pessoaId, Pessoa.id)
+#    projeto = reference(projetoId, Projeto.id)
     
     
     
