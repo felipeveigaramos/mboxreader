@@ -14,14 +14,14 @@ pessoa = entityfactory.get('pessoa')
 projeto = entityfactory.get('projeto')
 
 def main():
-    seleciona_projeto()
+    projeto = seleciona_projeto()
+    menu(projeto)
 
 def seleciona_projeto():
     print('Projetos:')
     projetoview.listar()
     pId = int(input('Id do projeto:'))
-    projeto = projetocontroller.get(id = pId)
-    menu(projeto)
+    return projetocontroller.get(id = pId)
 
 def menu(projeto):
     opcao = ''
@@ -44,23 +44,29 @@ def retorna_email(s):
     return sl[-1][1:-1]
 
 def retorna_nome(s):
-    sl= s.split("\"")
-    return sl[0][1:-1]
+    nome = ''
+    if s[0] == '"':
+        nome = s.split('"')[1]
+    else:
+        nome = s.split('<')[0]
+    return nome
+
 
 def carrega_pessoa(msg):
     email = retorna_email(msg['from'])
     data_mensagem = conversordata.gera_data(msg['date'])
     p = pessoacontroller.get(email)
+    print(str(type(p)))
     if p== None:
         p = pessoa.Pessoa(email)
         p.dataEntrada = data_mensagem
         p.nome = retorna_nome(msg['from'])
-    p.dataUltimoEMail = data_mensagem
+    p.dataUltimoEmail = data_mensagem
     return p
 
 def carrega_mensagem(msg, pessoa, projeto):
     m = mensagem.Mensagem(msg['from'], pessoa, projeto, to = msg['to'])
-    m.date = msg['date']
+    m.date = conversordata.gera_data(msg['date'])
     m.subject = msg['subject']
     m.in_reply_to = msg['in-reply-to']
     m.message_id = msg['message-id']
@@ -74,5 +80,6 @@ def carrega_mensagems_arquivo(file, projeto):
     for msg in mbox:
         pessoa = carrega_pessoa(msg)
         mensagem = carrega_mensagem(msg, pessoa, projeto)
+        mensagemcontroller.add(mensagem)
         mensagens_carregadas+=1
     print(str(mensagens_carregadas))

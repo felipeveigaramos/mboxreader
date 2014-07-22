@@ -4,6 +4,7 @@ import sys
 sys.path.append('.')
 from reader import entityfactory, modelfactory, controllerfactory
 from reader.view import projetoview, mensagemview
+from util import database
 
 pessoa = entityfactory.get('pessoa')
 projeto = entityfactory.get('projeto')
@@ -13,6 +14,7 @@ pessoacontroller = controllerfactory.get('pessoa')
 projetocontroller = controllerfactory.get('projeto')
 
 def main():
+    database.criar()
     opcao = ''
     while opcao != 'q':
         opcao = input("Qual sua opção?").lower()

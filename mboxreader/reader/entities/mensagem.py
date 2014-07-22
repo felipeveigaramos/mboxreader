@@ -3,31 +3,32 @@ Created on 31/03/2014
 
 @author: FelipeVR
 '''
-from datetime import datetime
 from reader.entities.pessoa import *
 from reader.entities.projeto import *
+from util.database import SingletonBase
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Text
+from sqlalchemy.orm import relationship, backref
 
-class Mensagem(object):
-    #__storm_table__ = "mensagem"
+class Mensagem(SingletonBase()):
+    __tablename__ = 'mensagem'
+    id = Column(Integer, primary_key=True)
+    message_from = Column(String(255), nullable=False)
+    to = Column(String(255), nullable=False)
+    subject = Column(String(255))
+    date = Column(DateTime(), nullable=False)
+    message_id = Column(String(255))
+    in_reply_to = Column(String(255))
+    references = Column(Text())
+    pessoa_id = Column(Integer, ForeignKey('pessoa.id'))
+    pessoa = relationship('Pessoa')
+    projeto_id = Column(Integer, ForeignKey('projeto.id'))
+    projeto= relationship('Projeto')
+    mensagemPai_id = Column(Integer, ForeignKey('mensagem.id'))
+    mensagemPai = relationship('Mensagem')
+
+
     def __init__(self, mFrom, pessoa, projeto, to = ''):
-        #message_from = Unicode() #Necessario ja que from eh uma palavra reservada
         self.message_from = mFrom
-        #to = Unicode()
         self.to = to
-        #pessoa = reference(pessoaId, Pessoa.id)
         self.pessoa = pessoa
-        #projeto = reference(projetoId, Projeto.id)
         self.projeto = projeto
-        #id = Int(primary=True)
-        self.id = 0
-        #subject = Unicode()
-        self.subject = ''
-        #date = DateTime()
-        self.date = datetime(1900, 1, 1)
-        #message_id = Unicode()
-        self.message_id = ''
-        #in_reply_to = Unicode()
-        self.in_reply_to = ''
-        #references = Unicode()
-        self.references = ''
-        self.mensagemPai = None

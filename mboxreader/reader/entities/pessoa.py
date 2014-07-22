@@ -3,21 +3,15 @@ Created on 30/03/2014
 
 @author: FelipeVR
 '''
-from datetime import datetime
+from util.database import SingletonBase
+from sqlalchemy import Column, Integer, String, DateTime
 
-
-class Pessoa(object):
-    #__storm_table__ = "pessoa"
-    def __init__(self, email, novato = False):
-        #email = Unicode()
+class Pessoa(SingletonBase()):
+    __tablename__ = 'pessoa'
+    id = Column(Integer, primary_key=True)
+    nome = Column(String(255), nullable=False)
+    email = Column(String(255), nullable=False)
+    dataEntrada = Column(DateTime(), nullable=False)
+    dataUltimoEmail = Column(DateTime(), nullable=False)
+    def __init__(self, email):
         self.email = email
-        #novato = Bool()
-        self.novato = novato
-        self.id = 0
-        #id = Int(primary=True)
-        #nome = Unicode()
-        self.nome = ''
-        #dataEntrada = DateTime(1900, 1, 1)
-        self.dataEntrada = datetime(1900, 1, 1)
-        #dataUltimoEmail = DateTime()
-        self.dataUltimoEmail = datetime(1900, 1, 1)
